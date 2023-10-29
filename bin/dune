@@ -1,0 +1,4 @@
+(executable
+ (public_name bignum)
+ (name main)
+ (libraries bignum))
