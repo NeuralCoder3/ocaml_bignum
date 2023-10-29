@@ -58,6 +58,9 @@ The assumption is that a natural number implementation is provided and then exte
 An integer is represented by a sign together with a natural number.
 The sign is implemented using sum types to avoid boolean blindness.
 
+Additional to the ambiguity of the underlying natural numbers, zero
+has two encodings (positive and negative).
+
 ### Notations
 
 We present a functor on a bignum implementation that overwrites the usual integer operations with the custom ones.
@@ -75,9 +78,9 @@ We present the functions for natural numbers and their asymptotic running time:
 | mul              | $\log n \cdot (2\cdot \log n + \log m) = \log^2 n$ |
 | cmp              | $\log n + \log m$ |
 | divmod           | $\log n + \log n \cdot (\log n + \log m + \log n + \log m) = \log^2 n$ |
-| string_of_bignum | $\log n * \log^2 n = \log^3 n$ |
+| string_of_bignum | $\log n \cdot \log^2 n = \log^3 n$ |
 | abs, shr, shl    | $1$ |
-| pow              | $\log n * \log^2 n = \log^3 n$ |
+| pow              | $\log n \cdot \log^2 n = \log^3 n$ |
 
 The input length $n$ is the represented integer itself.
 Therefore, $\log n$ is the size of the number representation.
@@ -121,6 +124,13 @@ In an extreme case, the base `pow 2 (Sys.int_size)` could be chosen.
 We could leverage normal integer operations for each part.
 The overhead in the normal integer space would be nearly zero.
 The recursion depth (and all constants) would be only a 32th of the current allowing for much larger numbers.
+
+## Tests
+
+You can run the tests using `dune test`.
+The tests generate 100000 random numbers for each function and compare
+the result of the bignum library with OCaml's built-in functions.
+To do so, the inputs are converted to big numbers and the results are converted back.
 
 ## Caveats & TODO
 
