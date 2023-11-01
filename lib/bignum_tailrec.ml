@@ -242,7 +242,6 @@ module BigNumTailN : BigNum = struct
 
   let shl _ _ = failwith "shl: not implemented"
   let shr _ _ = failwith "shr: not implemented"
-  let pow _ _ = failwith "pow: not implemented"
 
   let naiveDivMod b1 b2 : (int*t) =
     let rec aux b1 b2 c =
