@@ -4,9 +4,9 @@
   for more information.
 
 
-  To use this file:
+  To use this file (space in #use to avoid SOOCaml's recursive includes)
 
-  #use "bignum.ml";;
+  # use "bignum.ml";;
   open (BigInt (BigNum))
   open BigIntNotation (BigInt (BigNum))
 *)
@@ -283,3 +283,9 @@ module BigIntNotation (M:BigNum) = struct
   let s2b = M.bignum_of_string
   let b2s = M.string_of_bignum ~base:10
 end
+
+(* module Bignum = struct
+  module BigNum = BigNum
+  module BigInt = BigInt 
+  module BigIntNotation = BigIntNotation
+end *)

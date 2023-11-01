@@ -1,2 +1,14 @@
+; (library
+;  (name bignum)
+; )
+
 (library
- (name bignum))
+ (name bignum)
+ (modules bignum)
+)
+
+(library
+ (name bignum_tailrec)
+ (modules bignum_tailrec)
+ (libraries bignum)
+)
