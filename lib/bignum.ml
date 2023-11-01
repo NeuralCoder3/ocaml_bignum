@@ -22,7 +22,7 @@ module type BigNum = sig
   val bignum_of_int : int -> t
   val int_of_bignum : t -> int
   val string_of_bignum : ?base:int -> t -> string
-  val bignum_of_string : string -> t
+  val bignum_of_string : ?base:int -> string -> t
   val add : t -> t -> t
   val sub : t -> t -> t
   val mul : t -> t -> t
@@ -62,7 +62,8 @@ module BigNum : BigNum = struct
     | [] -> true
     | h::t -> not h && is_zero t
 
-  let bignum_of_string s : t =
+  let bignum_of_string ?(base=2) s : t =
+    if base <> 2 then failwith "bignum_of_string: only base 2 supported" else
     let len = String.length s in
     let rec aux s i =
       if i = len then []
@@ -202,8 +203,8 @@ module BigInt ( N : BigNum ) : BigNum
   let int_of_bignum (s, b) = (if s = Neg then -1 else 1) * N.int_of_bignum b
 
   let string_of_bignum ?(base=2) (s, b) = (if s = Neg then "-" else "") ^ N.string_of_bignum ~base b
-  let bignum_of_string s = 
-    if s.[0] = '-' then (Neg, N.bignum_of_string (String.sub s 1 (String.length s - 1)))
+  let bignum_of_string ?(base=2) s = 
+    if s.[0] = '-' then (Neg, N.bignum_of_string ~base (String.sub s 1 (String.length s - 1)))
     else (Pos, N.bignum_of_string s)
 
   let opp = function Neg -> Pos | Pos -> Neg
