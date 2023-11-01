@@ -286,6 +286,18 @@ module BigNumTailN : BigNum = struct
     in
     aux (List.rev b1) b2 []
 
+  let pow b1 b2 =
+    let rec aux b1 b2 a =
+      if is_zero b2 then a
+      else 
+        let (q,r) = divmod b2 (bignum_of_int 2) in
+        if is_zero r then
+          aux (mul b1 b1) q a
+        else
+          aux (mul b1 b1) q (mul b1 a)
+    in
+    aux b1 b2 (bignum_of_int 1) 
+
   (* 
   let mul b1 b2 =
     (* cps -> larger overflow limit but still there *)
@@ -333,7 +345,8 @@ module BigNumTailN : BigNum = struct
         | true::t ->
           aux (mul b1 b1) t (mul b1 a)
     in
-    aux b1 b2 (bignum_of_int 1) *)
+    aux b1 b2 (bignum_of_int 1) 
+    *)
 
   let abs = Fun.id
 
