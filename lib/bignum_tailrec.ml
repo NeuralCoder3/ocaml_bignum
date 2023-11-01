@@ -261,10 +261,6 @@ module BigNumTailN : BigNum = struct
         let r' = n0::r in
         let (c,r'') = naiveDivMod r' d in
         aux nr r'' (c::q)
-        (* if cmp r' d = Lt then 
-          aux nr r' (false::q)
-        else 
-          aux nr (sub r' d) (true::q) *)
     in
     aux n [] [] 
 
@@ -280,7 +276,6 @@ module BigNumTailN : BigNum = struct
     let rec aux b1 b2 acc =
       match b1 with
       | [] -> acc
-      (* | 0::t1 -> aux t1 b2 (0::acc) *)
       | c::t1 -> aux t1 b2 (add (naiveMul c b2) (0::acc))
     in
     aux (List.rev b1) b2 []
@@ -296,56 +291,6 @@ module BigNumTailN : BigNum = struct
           aux (mul b1 b1) q (mul b1 a)
     in
     aux b1 b2 (bignum_of_int 1) 
-
-  (* 
-  let mul b1 b2 =
-    (* cps -> larger overflow limit but still there *)
-    (* let rec aux b1 b2 cont =
-      match b1 with
-      | [] -> cont []
-      | false::t1 -> aux t1 b2 (fun acc -> cont (false::acc))
-      | true::t1 -> aux t1 b2 (fun acc -> cont (add b2 (false::acc)))
-    in
-    aux b1 b2 Fun.id *)
-    let rec aux b1 b2 acc =
-      match b1 with
-      | [] -> acc
-      | false::t1 -> aux t1 b2 (false::acc)
-      | true::t1 ->  aux t1 b2 (add b2 (false::acc))
-    in
-    aux (List.rev b1) b2 []
-
-  let shr b1 b2 = 
-    let rec aux b1 n =
-      if n = 0 then b1
-      else
-        match b1 with
-        | [] -> []
-        | _::t -> aux t (n - 1)
-    in
-    aux b1 (int_of_bignum b2)
-
-  let shl b1 b2 =
-    let rec aux b1 n =
-      if n = 0 then b1
-      else aux (false::b1) (n - 1)
-    in
-    aux b1 (int_of_bignum b2)
-
-
-  let pow b1 b2 =
-    let rec aux b1 b2 a =
-      if is_zero b2 then a
-      else 
-        match b2 with
-        | [] -> assert false
-        | false::t -> 
-          aux (mul b1 b1) t a
-        | true::t ->
-          aux (mul b1 b1) t (mul b1 a)
-    in
-    aux b1 b2 (bignum_of_int 1) 
-    *)
 
   let abs = Fun.id
 
@@ -363,14 +308,6 @@ module BigNumTailN : BigNum = struct
     aux b ""
 
   let bignum_of_string ?(base=2) s : t =
-    (* failwith "bignum_of_string: not implemented" *)
-    (* let len = String.length s in
-    let rec aux s i =
-      if i = len then []
-      else
-        (charToDigit s.[i]) :: aux s (i + 1)
-    in
-    aux s 0 |> List.rev *)
     let len = String.length s in
     let bbase = bignum_of_int base in
     let rec aux n s i =
