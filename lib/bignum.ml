@@ -284,8 +284,9 @@ module BigIntNotation (M:BigNum) = struct
   let b2s = M.string_of_bignum ~base:10
 end
 
-(* module Bignum = struct
+(* SOOCaml compatibility *)
+module Bignum = struct
   module BigNum = BigNum
   module BigInt = BigInt 
   module BigIntNotation = BigIntNotation
-end *)
+end
